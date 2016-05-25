@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="myCircleView">
+        <!-- 开始角度 -->
+        <attr name="startDegree" format="reference|integer" />
+        <!-- 结束角度 -->
+        <attr name="endDegree" format="reference|integer" />
+        <!-- 小圆的角度差 -->
+        <attr name="defDegree" format="reference|integer" />
+        <!-- 小圆中心的位置半径 -->
+        <attr name="radiusTotal" format="reference|dimension" />
+               <!-- 小圆的半径 -->
+        <attr name="radiusRound" format="reference|dimension" />
+        <!-- 中心与小圆的距离 -->
+        <attr name="distance" format="reference|dimension" />
+        <attr name="bgColor" format="reference|color" />
+        
+    </declare-styleable>
+
+</resources>
