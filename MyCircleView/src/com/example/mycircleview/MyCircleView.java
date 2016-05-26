@@ -11,6 +11,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class MyCircleView extends AbCircleView {
 	private Context context;
@@ -27,6 +28,7 @@ public class MyCircleView extends AbCircleView {
 	private OnClickListener mAddCircleClickListener;
 	private ImageButton firstAddView;
 	private MyAdapter mAdapter;
+	private int defCircleRoundCount;
 
 	public MyCircleView(Context context) {
 		this(context, null);
@@ -75,6 +77,9 @@ public class MyCircleView extends AbCircleView {
 
 			}
 		}
+		// 可以用上面的 attr 来设置 。后续优化时更改 临行性的
+		defCircleRoundCount = 8;
+
 		a.recycle();
 
 		// RadiusTotal = 280;
@@ -85,6 +90,13 @@ public class MyCircleView extends AbCircleView {
 
 		createAddCircleView(context);
 
+	}
+
+	/**
+	 * 设置外圆的个数，不算添加圆，即第一个圆。
+	 */
+	public void setRoundCircleCount(int count) {
+		defCircleRoundCount = count;
 	}
 
 	/**
@@ -138,7 +150,6 @@ public class MyCircleView extends AbCircleView {
 		}
 	}
 
-	
 	@Override
 	protected void onDraw(Canvas canvas) {
 		// TODO Auto-generated method stub
@@ -156,11 +167,25 @@ public class MyCircleView extends AbCircleView {
 		adapter.setMainView(this);
 		notifyDataChanged(adapter);
 	}
-	
+
+	/**
+	 * 返回默认外围圆个数
+	 * @return
+	 */
+	public int getDefRoundCircleCount(){
+		return defCircleRoundCount;
+	}
 	@Override
 	public void notifyDataChanged(MyAdapter adapter) {
+
 		if (mAdapter != null) {
-			removeViews(1, mAdapter.getCount()-1);
+			/**
+			 * 超过默认外围圆的个数，就不更新，外部Adapt也要做一下List的限制
+			 */
+			if (mAdapter.getCount() > defCircleRoundCount) {
+				return;
+			}
+			removeViews(1, getChildCount()-1);
 		}
 		this.mAdapter = adapter;
 		addAdapterView();
@@ -173,6 +198,7 @@ public class MyCircleView extends AbCircleView {
 	private void addAdapterView() {
 		// TODO Auto-generated method stub
 		for (int i = 0; i < mAdapter.getCount(); i++) {
+
 			ImageButton imageView = (ImageButton) mAdapter.getView(i, null, this);
 			LayoutParams lp = new LayoutParams(2 * rediusCircleRound, 2 * rediusCircleRound);
 			imageView.setLayoutParams(lp);
